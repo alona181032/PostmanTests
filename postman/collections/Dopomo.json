@@ -1,0 +1,2237 @@
+{
+	"info": {
+		"_postman_id": "98f3b6cf-bb79-492e-b059-27a437b0c6d5",
+		"name": "Dopomo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "21536613-98f3b6cf-bb79-492e-b059-27a437b0c6d5"
+	},
+	"item": [
+		{
+			"name": "APP",
+			"item": [
+				{
+					"name": "app/self 401",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ee8dea09-28ce-480f-96ab-473da03ee194",
+								"exec": [
+									"let responseData = pm.response.json()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "ae36ba29-3f72-4867-99fa-404a6efe09a0",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/app/self",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"self"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/send-code",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b88049c5-c233-45b6-813c-50fd0e87da56",
+								"exec": [
+									"let responseData= pm.response.json();\r",
+									"console.log (responseData);\r",
+									"\r",
+									"let requestData = request.data\r",
+									"console.log (requestData);\r",
+									"\r",
+									"pm.test(\"Test code 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Test response JSON\", function () {\r",
+									"    pm.expect(responseData.data.is_new).to.be.a('boolean');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response includes parameters\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"is_new\")\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "5d44d8e0-c658-4370-a270-992f8c2bb104",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"phone\": \"380631111111\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/app/send-code",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"send-code"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/verify",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ad5efa5a-a7e6-4661-b51f-207771a7edfe",
+								"exec": [
+									"let responseData= pm.response.json();\r",
+									"console.log (responseData);\r",
+									"\r",
+									"let requestData = request.data\r",
+									"console.log (requestData);\r",
+									"\r",
+									"pm.environment.set(\"user_id\", responseData.data.uuid);\r",
+									"\r",
+									"pm.test(\"Test status code 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Test response JSON\", function () {\r",
+									"    pm.expect(responseData.data.uuid).to.be.a('string');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response includes parameters\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"uuid\")\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "d5aeb4b2-c17e-431b-8e75-a3dafe372640",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"phone\": \"380631111111\",\r\n  \"code\": \"1111\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/app/verify",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/addresses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6fe0d823-005a-4f53-8045-e7157fe2a31b",
+								"exec": [
+									"let responseData = pm.response.json ()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set('address_uuid', responseData.data[0].uuid);\r",
+									"\r",
+									"\r",
+									" pm.test(\"Format data Response body contains\", () => {\r",
+									"    pm.expect(responseData.data).to.be.an('array');\r",
+									"    pm.expect(responseData.data[0].id).to.be.a('number');\r",
+									"    pm.expect(responseData.data[0].uuid).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].customer_uuid).to.be.a('string');   \r",
+									"    pm.expect(responseData.data[0].country).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].city).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].street).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].house).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].entrance).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].apartment).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].postcode).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].longitude).to.be.a('number');\r",
+									"    pm.expect(responseData.data[0].latitude).to.be.a('number');\r",
+									"    let description = responseData.data[0].description;\r",
+									"    pm.expect(typeof description === 'string' || description=== null).to.be.true;\r",
+									" let created_at = responseData.data[0].created_at;\r",
+									"    pm.expect(typeof created_at === 'string' || created_at=== null).to.be.true;\r",
+									"    let updated_at = responseData.data[0].updated_at;\r",
+									"    pm.expect(typeof updated_at === 'string' || updated_at=== null).to.be.true;\r",
+									"     let deleted_at = responseData.data[0].deleted_at;\r",
+									"    pm.expect(typeof deleted_at === 'string' || deleted_at=== null).to.be.true;\r",
+									"  });\r",
+									"\r",
+									"\r",
+									"     pm.test(\"Response have all keys\", function () {\r",
+									"pm.expect(responseData.data[0]).to.have.all.keys('id', 'uuid', 'customer_uuid', 'country','city', 'street', 'house', 'entrance', 'apartment', 'postcode', 'longitude', 'latitude', 'description', 'created_at', 'updated_at',  'deleted_at');\r",
+									"});\r",
+									"\r",
+									"    \r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "175ce368-36e9-405d-8b6c-673fb0b9764d",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/app/addresses",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/blockchain",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e0716ec6-d73d-412a-bb54-1366ace403f7",
+								"exec": [
+									"let responseData = pm.response.json()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response format data\", function () {\r",
+									"    pm.expect(responseData.data).to.be.an(\"object\");\t\r",
+									"    pm.expect(responseData.data.address).to.be.an(\"object\");\r",
+									"    let score = responseData.data.score\t\r",
+									"    pm.expect(typeof score === 'number' || score === null);\t\r",
+									"    pm.expect(responseData.data.data).to.be.an(\"array\");\t\r",
+									"    pm.expect(responseData.data.address.id).to.be.a(\"number\");\t\r",
+									"    pm.expect(responseData.data.address.uuid).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.address.customer_uuid).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.address.country).to.be.a(\"string\");\t\t\r",
+									"    pm.expect(responseData.data.address.city).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.address.street).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.address.house).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.address.apartment).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.address.postcode).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.address.description).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.address.created_at).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.address.updated_at).to.be.a(\"string\");\t\r",
+									"       let deleted_at = responseData.data.address.deleted_at\t\r",
+									"    pm.expect(typeof deleted_at === 'string' || deleted_at === null);\t\r",
+									"    pm.expect(responseData.data.address.entrance).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.address.longitude).to.be.a(\"number\");\r",
+									"    pm.expect(responseData.data.address.latitude).to.be.a(\"number\");\r",
+									"  \r",
+									"    let item = responseData.data.data[0];\r",
+									"    if (item !== undefined) {\r",
+									"        pm.expect(item.tx).to.be.a(\"string\");\r",
+									"        pm.expect(item.hash).to.be.a(\"string\");\r",
+									"    }\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys in address\", function () {\r",
+									"pm.expect(responseData.data.address).to.have.all.keys('id', 'uuid', 'customer_uuid', 'country', 'street', 'city', 'house', 'apartment', 'postcode', 'description', 'created_at', 'updated_at', 'deleted_at', 'entrance', 'longitude', 'latitude');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys in data\", function () {\r",
+									"pm.expect(responseData.data).to.have.all.keys('address', 'score', 'data');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "33acd9aa-2fff-43e8-9107-d3ec9504dda8",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/app/blockchain?address_uuid={{address_uuid}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"blockchain"
+							],
+							"query": [
+								{
+									"key": "address_uuid",
+									"value": "{{address_uuid}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "84393ec1-a4db-417d-8c7c-58d42273ba3f",
+								"exec": [
+									"let responseData = pm.response.json();\r",
+									"console.log(responseData);\r",
+									"pm.environment.set('jwt_client_token', responseData.data.access_token);\r",
+									"\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response format data\", function () {\r",
+									"    pm.expect(responseData.data.access_token).to.be.a('string');\r",
+									"    pm.expect(responseData.data.user).to.be.an('object');\r",
+									"    pm.expect(responseData.data.user.uuid).to.be.a('string');   \r",
+									"    pm.expect(responseData.data.user.email).to.be.a('string');\r",
+									"    pm.expect(responseData.data.user.phone).to.be.a('string');\r",
+									"    pm.expect(responseData.data.user.created_at).to.be.a('string');\r",
+									"    pm.expect(responseData.data.user.role.name).to.be.a('string');   \r",
+									"    pm.expect(responseData.data.user.role).to.be.an('object');\r",
+									"    pm.expect(responseData.data.user.first_name).to.be.a('string');\r",
+									"    pm.expect(responseData.data.user.last_name).to.be.a('string');\r",
+									"    let avatar_path = responseData.data.user.avatar_path;\r",
+									"    pm.expect(typeof avatar_path === 'string' || avatar_path === null ).to.be.true;\r",
+									"    pm.expect(responseData.data.user.is_push_allow).to.be.a('boolean');\r",
+									"    pm.expect(responseData.data.user.language).to.be.a('string');\r",
+									"    pm.expect(responseData.data.user.promo_code).to.be.a('string');\r",
+									"    let email_verify_at = responseData.data.user.email_verify_at;\r",
+									"    pm.expect(typeof email_verify_at === 'string' || email_verify_at === null).to.be.true;\r",
+									"    let billing_address = responseData.data.user.billing_address;\r",
+									"    if (billing_address !== null) {\r",
+									"        pm.expect(responseData.data.user.billing_address.country).to.be.a('string');\r",
+									"        pm.expect(responseData.data.user.billing_address.city).to.be.a('string');\r",
+									"        pm.expect(responseData.data.user.billing_address.street).to.be.a('string');\r",
+									"        pm.expect(responseData.data.user.billing_address.house).to.be.a('string');\r",
+									"        pm.expect(responseData.data.user.billing_address.postcode).to.be.a('string');\r",
+									"        pm.expect(responseData.data.user.billing_address.last_name).to.be.a('string');\r",
+									"        pm.expect(responseData.data.user.billing_address.first_name).to.be.a('string');\r",
+									"        let greetings = responseData.data.user.billing_address.greetings;\r",
+									"        pm.expect(typeof greetings === 'string' || greetings=== null).to.be.true;\r",
+									"    }\r",
+									"    let subscription = responseData.data.user.subscription;\r",
+									"    pm.expect(typeof subscription === 'string' || subscription=== null).to.be.true;\r",
+									"    pm.expect(responseData.data.user.devices).to.be.an('array');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys in data\", function () {\r",
+									"    pm.expect(responseData.data).to.have.all.keys('access_token', 'user');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys in data.user\", function () {\r",
+									"    pm.expect(responseData.data.user).to.have.all.keys('uuid', 'email', 'phone', 'devices','created_at', 'first_name', 'last_name', 'avatar_path', 'is_push_allow', 'language', 'promo_code', 'email_verify_at', 'billing_address', 'subscription', 'role');\r",
+									"});\r",
+									"pm.test(\"Response have all keys in billing_address\", function () {\r",
+									"    let billing_address = responseData.data.user.billing_address;\r",
+									"    if (billing_address === null){\r",
+									"        return;\r",
+									"    }\r",
+									"    pm.expect(responseData.data.user.billing_address).to.have.all.keys('country', 'street', 'city', 'house','postcode', 'first_name', 'last_name', 'greetings');\r",
+									"});\r",
+									"pm.test(\"Response have all keys in role\", function () {\r",
+									"    pm.expect(responseData.data.user.role).to.have.all.keys('name');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "9591a0e9-b8c3-4cbd-8cf9-8517cd6b8a93",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"uuid\": \"{{user_id}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/app/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/self",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bad8cbcf-567d-4312-934a-ca22d0263c36",
+								"exec": [
+									"let responseData = pm.response.json()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response format data\", function () {\r",
+									"    pm.expect(responseData.data.uuid).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.email).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.phone).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.created_at).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.role.name).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.first_name).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.last_name).to.be.a(\"string\");\t\r",
+									"    let avatar_path = responseData.data.avatar_path;\r",
+									"    pm.expect(typeof avatar_path === 'string' || avatar_path === null).to.be.a.true;\t\r",
+									"    pm.expect(responseData.data.is_push_allow).to.be.a(\"boolean\");\t\r",
+									"    pm.expect(responseData.data.language).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.promo_code).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.email_verify_at).to.be.null;\r",
+									"    let billing_address = responseData.data.billing_address;\r",
+									"    if (billing_address !== null) {\t\r",
+									"    pm.expect(responseData.data.billing_address.country).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.billing_address.city).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.billing_address.street).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.billing_address.house).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.billing_address.postcode).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.billing_address.first_name).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.billing_address.last_name).to.be.a(\"string\");\t\r",
+									"    let greetings = responseData.data.billing_address.greetings;\r",
+									"    pm.expect(typeof greetings === 'string' || greetings=== null).to.be.true;\r",
+									"    }\t\r",
+									"    pm.expect(typeof responseData.data.subscription === 'string' || responseData.data.subscription=== null).to.be.true;\r",
+									"    pm.expect(responseData.data.devices).to.be.an(\"array\");\t\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys\", function () {\r",
+									"pm.expect(responseData.data).to.have.all.keys('uuid', 'email', 'phone', 'devices','created_at', 'first_name', 'last_name', 'avatar_path', 'is_push_allow', 'language', 'promo_code', 'email_verify_at', 'billing_address', 'subscription', 'role');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys in billing_address\", function () {\r",
+									"    let billing_address = responseData.data.billing_address;\r",
+									"    if (billing_address === null){\r",
+									"        return;\r",
+									"    }\r",
+									"pm.expect(responseData.data.billing_address).to.have.all.keys('country', 'street', 'city', 'house','postcode', 'first_name', 'last_name', 'greetings');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys in role\", function () {\r",
+									"pm.expect(responseData.data.role).to.have.all.keys('name');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "b17c4939-bc57-413e-b810-cd26243d87dd",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/app/self",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"self"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/self/payments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "1ab97ae6-5aed-4b67-b50f-837ceadc2c00",
+								"exec": [
+									"let responseData = pm.response.json()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response format data\", function () {    \r",
+									"    pm.expect(responseData.data).to.be.an(\"object\");\t\r",
+									"    pm.expect(responseData.data['bonus-account']).to.be.an(\"object\");\t\r",
+									"    pm.expect(responseData.data['bonus-account'].amount).to.be.a(\"number\");\t\r",
+									"    pm.expect(responseData.data['bonus-account'].is_invoice).to.be.a(\"boolean\");\t\t\r",
+									"    let subscription = responseData.data.subscription;\r",
+									"    pm.expect(typeof subscription === 'object' || description=== null).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys\", function () {\r",
+									"    pm.expect(responseData.data).to.have.all.keys('bonus-account','subscription');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys in bonus-account\", function () {\r",
+									"    pm.expect(responseData.data['bonus-account']).to.have.all.keys('amount', 'is_invoice');\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "b5983b6a-2ea8-4383-a18a-7f6f8cec4551",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/app/self/payments",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"self",
+								"payments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "aed7223b-65c4-4ce3-a740-cc0ffa7ee5d6",
+								"exec": [
+									"\r",
+									"\r",
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "d4cb5a7d-bb19-4590-b19b-3586d649d1d5",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"first_name\": \"Alex\",\r\n  \"last_name\": \"Ivanov\",\r\n  \"email\": \"alex@gmail.com\",\r\n  \"language\": \"en\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/app/profile",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/verify-email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e97b32eb-5756-4ae5-a793-bd3437e89474",
+								"exec": [
+									"\r",
+									"pm.test(\"Test status code 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "90f22138-6303-4d02-9937-dd08cc7a55e7",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/app/verify-email",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"verify-email"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/addresses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "97fce5ca-fad3-470d-869d-e18b61994bf5",
+								"exec": [
+									"let responseData = pm.response.json ()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"pm.environment.set(\"address_uuid_post\", responseData.data.uuid);\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									" pm.test(\"Format data Response body contains\", () => {\r",
+									"    pm.expect(responseData.data).to.be.an('object');\r",
+									"    pm.expect(responseData.data.id).to.be.a('number');\r",
+									"    pm.expect(responseData.data.uuid).to.be.a('string');\r",
+									"    pm.expect(responseData.data.customer_uuid).to.be.a('string');   \r",
+									"    pm.expect(responseData.data.country).to.be.a('string');\r",
+									"    pm.expect(responseData.data.city).to.be.a('string');\r",
+									"    pm.expect(responseData.data.street).to.be.a('string');\r",
+									"    pm.expect(responseData.data.house).to.be.a('string');\r",
+									"    pm.expect(responseData.data.apartment).to.be.a('string');\r",
+									"    pm.expect(responseData.data.postcode).to.be.a('string');\r",
+									"     pm.expect(responseData.data.description).to.be.a('string');\r",
+									"    pm.expect(responseData.data.created_at).to.be.a('string');\r",
+									"     pm.expect(responseData.data.updated_at).to.be.a('string');\r",
+									"    let deleted_at = responseData.data.deleted_at;\r",
+									"    pm.expect(typeof deleted_at === 'string' || deleted_at=== null).to.be.true;\r",
+									"    pm.expect(responseData.data.entrance).to.be.a('string');\r",
+									"    pm.expect(responseData.data.longitude).to.be.a('number');\r",
+									"    pm.expect(responseData.data.latitude).to.be.a('number');\r",
+									" });\r",
+									"\r",
+									"     pm.test(\"Response have all keys\", function () {\r",
+									"pm.expect(responseData.data).to.have.all.keys('id', 'uuid', 'customer_uuid', 'country','city', 'street', 'house', 'entrance', 'apartment', 'postcode', 'longitude', 'latitude', 'description', 'created_at', 'updated_at',  'deleted_at');\r",
+									"});\r",
+									"\r",
+									"    \r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "fc13f421-d044-485d-b031-f52e68cd9b75",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "city",
+									"value": "{{$randomCity}}",
+									"type": "text"
+								},
+								{
+									"key": "street",
+									"value": "\"Ozerna\"",
+									"type": "text"
+								},
+								{
+									"key": "house",
+									"value": "\"23\"",
+									"type": "text"
+								},
+								{
+									"key": "longitude",
+									"value": "{{$randomLongitude}}",
+									"type": "text"
+								},
+								{
+									"key": "latitude",
+									"value": "{{$randomLatitude}}",
+									"type": "text"
+								},
+								{
+									"key": "country",
+									"value": "\"Ukraine\"",
+									"type": "text"
+								},
+								{
+									"key": "entrance",
+									"value": "\"2\"",
+									"type": "text"
+								},
+								{
+									"key": "apartment",
+									"value": "\"435\"",
+									"type": "text"
+								},
+								{
+									"key": "postcode",
+									"value": "\"04200\"",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "\"Test\"",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/app/addresses",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/addresses/{address_uuid}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "5af78c6e-2de6-4405-8664-927281346c79",
+								"exec": [
+									"\r",
+									"\r",
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									" "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "513afb70-9871-4b82-8de4-8b81fff004f3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"country\": \"Ukraine\",\r\n  \"city\": \"Kyiv\",\r\n  \"street\": \"Ozerna\",\r\n  \"house\": \"23\",\r\n  \"entrance\": \"2\",\r\n  \"apartment\": \"435\",\r\n  \"postcode\": \"04200\",\r\n  \"longitude\": \"30.334565\",\r\n  \"latitude\": \"50.334565\",\r\n  \"description\": \"Test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/app/addresses/{{address_uuid_post}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"addresses",
+								"{{address_uuid_post}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/addresses/{address_uuid} Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "6b3c2685-24b2-4614-9ee3-a55666d903ca",
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									" "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "1e8aae80-234f-41b8-9cfd-2cae0d68d558",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/app/addresses/{{address_uuid_post}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"addresses",
+								"{{address_uuid_post}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/billing-addresses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c2b1c41a-00a6-4be4-9cbb-b2949cea1cad",
+								"exec": [
+									"let responseData = pm.response.json ()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									" pm.test(\"Format data Response body contains\", () => {\r",
+									"  let item = responseData.data[0];\r",
+									"    if (item === undefined) {\r",
+									"        return;\r",
+									"    }\r",
+									"        pm.expect(responseData.data).to.be.an('array');\r",
+									"        pm.expect(responseData.data[0].id).to.be.a('number');\r",
+									"        pm.expect(responseData.data[0].uuid).to.be.a('string');\r",
+									"        pm.expect(responseData.data[0].customer_uuid).to.be.a('string');   \r",
+									"        pm.expect(responseData.data[0].country).to.be.a('string');\r",
+									"        pm.expect(responseData.data[0].city).to.be.a('string');\r",
+									"        pm.expect(responseData.data[0].street).to.be.a('string');\r",
+									"        pm.expect(responseData.data[0].house).to.be.a('string');\r",
+									"        pm.expect(responseData.data[0].postcode).to.be.a('string');\r",
+									"        pm.expect(responseData.data[0].last_name).to.be.a('string');\r",
+									"        pm.expect(responseData.data[0].first_name).to.be.a('string');\r",
+									"        pm.expect(responseData.data[0].created_at).to.be.a('string');\r",
+									"        pm.expect(responseData.data[0].updated_at).to.be.a('string');\r",
+									"        let deleted_at = responseData.data[0].deleted_at;\r",
+									"        pm.expect(typeof deleted_at === 'string' || deleted_at=== null).to.be.true;\r",
+									"        let greetings = responseData.data[0].greetings;\r",
+									"        pm.expect(typeof greetings === 'string' || greetings=== null).to.be.true;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys\", function () {\r",
+									"    let item = responseData.data[0];\r",
+									"    if (item === undefined) {\r",
+									"        return;\r",
+									"    }\r",
+									"    pm.expect(responseData.data[0]).to.have.all.keys('id', 'uuid', 'customer_uuid', 'country','city', 'street', 'house',  'postcode', 'last_name', 'first_name', 'created_at', 'updated_at',  'deleted_at', 'greetings');\r",
+									"});\r",
+									"\r",
+									"    \r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "044fb235-c86f-470d-a8c7-294af6649525",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/app/billing-addresses",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"billing-addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/billing-addresses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec44d44d-9109-4150-aeba-2f636d70f3d5",
+								"exec": [
+									"let responseData = pm.response.json ()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.environment.set ('billing_address_uuid', responseData.data.uuid);\r",
+									"\r",
+									" pm.test(\"Format data Response body contains\", () => {\r",
+									"    pm.expect(responseData.data).to.be.an('object');\r",
+									"    pm.expect(responseData.data.id).to.be.a('number');\r",
+									"    pm.expect(responseData.data.uuid).to.be.a('string');\r",
+									"    pm.expect(responseData.data.customer_uuid).to.be.a('string');   \r",
+									"    pm.expect(responseData.data.country).to.be.a('string');\r",
+									"    pm.expect(responseData.data.city).to.be.a('string');\r",
+									"    pm.expect(responseData.data.street).to.be.a('string');\r",
+									"    pm.expect(responseData.data.house).to.be.a('string');\r",
+									"    pm.expect(responseData.data.postcode).to.be.a('string');\r",
+									"    pm.expect(responseData.data.last_name).to.be.a('string');\r",
+									"    pm.expect(responseData.data.first_name).to.be.a('string');\r",
+									"    pm.expect(responseData.data.created_at).to.be.a('string');\r",
+									"    pm.expect(responseData.data.updated_at).to.be.a('string');\r",
+									"     let deleted_at = responseData.data.deleted_at;\r",
+									"    pm.expect(typeof deleted_at === 'string' || deleted_at=== null).to.be.true;\r",
+									"     let greetings = responseData.data.greetings;\r",
+									"    pm.expect(typeof greetings === 'string' || greetings=== null).to.be.true;\r",
+									"  });\r",
+									"\r",
+									"pm.test(\"Response have all keys\", function () {\r",
+									"    pm.expect(responseData.data).to.have.all.keys('id', 'uuid', 'customer_uuid', 'country','city', 'street', 'house',  'postcode', 'last_name', 'first_name', 'created_at', 'updated_at',  'deleted_at', 'greetings');\r",
+									"});\r",
+									"\r",
+									"    \r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "df39bca8-9242-42ec-a4b6-ce5417d55e22",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "country",
+									"value": "Ukraine",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "{{$randomCity}}",
+									"type": "text"
+								},
+								{
+									"key": "street",
+									"value": "Ozerna",
+									"type": "text"
+								},
+								{
+									"key": "house",
+									"value": "235",
+									"type": "text"
+								},
+								{
+									"key": "postcode",
+									"value": "04210",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "{{$randomLastName}}",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "{{$randomFirstName}}",
+									"type": "text"
+								},
+								{
+									"key": "greeting",
+									"value": "miss",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/app/billing-addresses",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"billing-addresses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/billing-addresses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0db26e19-1f84-4475-abce-ae0d101cb9ed",
+								"exec": [
+									"\r",
+									"\r",
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "5f688c61-2fd8-4110-a1dc-05ad50d3e0ce",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "country",
+									"value": "Ukraine",
+									"type": "text"
+								},
+								{
+									"key": "city",
+									"value": "{{$randomCity}}",
+									"type": "text"
+								},
+								{
+									"key": "street",
+									"value": "Ozerna",
+									"type": "text"
+								},
+								{
+									"key": "house",
+									"value": "235",
+									"type": "text"
+								},
+								{
+									"key": "postcode",
+									"value": "04210",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "{{$randomLastName}}",
+									"type": "text"
+								},
+								{
+									"key": "first_name",
+									"value": "{{$randomFirstName}}",
+									"type": "text"
+								},
+								{
+									"key": "greeting",
+									"value": "miss",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{url}}/app/billing-addresses/{{billing_address_uuid}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"billing-addresses",
+								"{{billing_address_uuid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/billing-addresses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "25293306-4b5c-42ae-bb3e-777d49571658",
+								"exec": [
+									"\r",
+									"\r",
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									" "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "0cb4b1e8-c53e-415a-bb9f-09389575387a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/app/billing-addresses/{{billing_address_uuid}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"billing-addresses",
+								"{{billing_address_uuid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/languages",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e38377a9-fa88-4a47-84e7-41e6a8373e60",
+								"exec": [
+									"let responseData = pm.response.json()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response format data\", function () {\r",
+									"    pm.expect(responseData.data).to.be.an(\"array\");\t\r",
+									"    pm.expect(responseData.data[0].uuid).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data[0].title).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data[0].code).to.be.a(\"string\");\t\t\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys\", function () {\r",
+									"pm.expect(responseData.data[0]).to.have.all.keys('uuid', 'title', 'code');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "e408f7a0-a3d7-4f77-9abc-8d2535d8f08a",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/app/languages",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"languages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/bonus-accounts/balance",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "13361611-e62b-4dfc-8ac6-f2f7182fc104",
+								"exec": [
+									"let responseData = pm.response.json()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response format data\", function () {\r",
+									"    pm.expect(responseData.data).to.be.an(\"object\");\t\r",
+									"    pm.expect(responseData.data.amount).to.be.a(\"number\");\t\r",
+									"    pm.expect(responseData.data.is_invoice).to.be.a(\"boolean\");\t\t\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys\", function () {\r",
+									"pm.expect(responseData.data).to.have.all.keys('amount', 'is_invoice');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "ad68970b-ffdb-481b-8e65-dec29d683cdc",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/app/bonus-accounts/balance",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"bonus-accounts",
+								"balance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/products",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c3ca02c4-068a-4506-8503-8daa53ed9763",
+								"exec": [
+									"let responseData = pm.response.json()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response format data\", function () {\t\r",
+									"    pm.expect(responseData.data).to.be.an(\"array\");\t\r",
+									"    pm.expect(responseData.data[0].uuid).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data[0].title).to.be.a(\"string\");\r",
+									"    pm.expect(responseData.data[0].type).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data[0].services).to.be.an(\"array\");\t\t\r",
+									"    pm.expect(responseData.data[0].services[0].uuid).to.be.a(\"string\");\t\t\r",
+									"        pm.expect(responseData.data[0].services[0].title).to.be.a(\"string\");\t\t\r",
+									"        pm.expect(responseData.data[0].services[0].type).to.be.a(\"string\");\t\t\r",
+									"        pm.expect(responseData.data[0].services[0].icon_path).to.be.a(\"string\");\t\t\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys in data\", function () {\r",
+									"pm.expect(responseData.data[0]).to.have.all.keys('uuid', 'title', 'type', 'services');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys in services\", function () {\r",
+									"pm.expect(responseData.data[0].services[0]).to.have.all.keys('uuid', 'title', 'type', 'icon_path');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "19a5c2ea-482c-4c23-9e50-0ec3d642f927",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/app/products",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/products/{product}/price",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2cf2b03f-fc28-45b8-9761-3ee630f9f7f9",
+								"exec": [
+									"let responseData = pm.response.json()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response format data\", function () {\t\r",
+									"    pm.expect(responseData.data).to.be.an(\"object\");\t\r",
+									"    pm.expect(responseData.data.price).to.be.a(\"number\");\t\t\t\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys in data\", function () {\r",
+									"pm.expect(responseData.data).to.have.all.keys('price');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "ed37664c-98d6-4cfe-bfd9-ceb4281302c3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/app/products/{product}/price",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"products",
+								"{product}",
+								"price"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/promo-codes/referer",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "970a01de-f7c4-405b-9db2-3cf90cdbef24",
+								"exec": [
+									"let responseData = pm.response.json()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response format data\", function () {\t\r",
+									"    pm.expect(responseData.data).to.be.an(\"object\");\t\r",
+									"    pm.expect(responseData.data.promo_code).to.be.a(\"string\");\t\r",
+									"    pm.expect(responseData.data.promo_code_amount).to.be.a(\"number\");\t\t\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys in data\", function () {\r",
+									"pm.expect(responseData.data).to.have.all.keys('promo_code', 'promo_code_amount');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "3ddeeb6d-a46e-46fe-9b36-8368995009f3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/app/promo-codes/referer",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"promo-codes",
+								"referer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/push-allow",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "03a27b19-f372-44f1-8393-009e5bd95df9",
+								"exec": [
+									"\r",
+									"pm.test(\"Status code is 204\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "cc67a8af-1737-4542-b56b-8c4e3bfcaee4",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"is_allowed\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/app/push-allow",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"push-allow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/token-beams",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "853cc886-99f3-4f2f-b5ba-b564392a27a3",
+								"exec": [
+									"let responseData = pm.response.json()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response format data\", function () {\t\t\r",
+									"    pm.expect(responseData.token).to.be.a(\"string\");\t\t\t\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response have all keys in data\", function () {\r",
+									"pm.expect(responseData).to.have.all.keys('token');\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "f6efee5c-8d7f-4ae8-990f-9a59f033c68b",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/app/token-beams",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"token-beams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/scoring",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "62bac899-28bb-4dbb-8c83-db77e81af198",
+								"exec": [
+									"let responseData = pm.response.json()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"pm.environment.set('scoring_uuid', responseData.data[0].scoring_uuid);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									" pm.test(\"Format data Response body contains\", () => {\r",
+									"    pm.expect(responseData.data).to.be.an('array');\r",
+									"    pm.expect(responseData.data[0].scoring_uuid).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].address).to.be.an('object');\r",
+									"    pm.expect(responseData.data[0].datetime).to.be.a('string');  \r",
+									"    let score= responseData.data[0].score; \r",
+									"    pm.expect(typeof score === 'number' || score === null).to.be.true;\r",
+									"    pm.expect(responseData.data[0].status).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].scores).to.be.an('array');\r",
+									"    pm.expect(responseData.data[0].address.id).to.be.a('number');\r",
+									"    pm.expect(responseData.data[0].address.uuid).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].address.customer_uuid).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].address.country).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].address.city).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].address.street).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].address.house).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].address.apartment).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].address.postcode).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].address.description).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].address.created_at).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].address.updated_at).to.be.a('string');\r",
+									"        let deleted_at = responseData.data[0].address.deleted_at;\r",
+									"    pm.expect(typeof deleted_at === 'string' || deleted_at=== null).to.be.true;\r",
+									"    pm.expect(responseData.data[0].address.longitude).to.be.a('number');\r",
+									"    pm.expect(responseData.data[0].address.latitude).to.be.a('number');\r",
+									"    pm.expect(responseData.data[0].scores).to.be.an('array');\r",
+									"    pm.expect(responseData.data[0].scores[0].uuid).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].scores[0].type).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].scores[0].datetime).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].scores[0].action).to.be.a('string');\r",
+									"  let score2= responseData.data[0].scores[0].score; \r",
+									"    pm.expect(typeof score2 === 'number' || score2 === null).to.be.true;\r",
+									"     let file= responseData.data[0].scores[0].file; \r",
+									"    pm.expect(typeof file === 'string' || file === null).to.be.true;\r",
+									"      pm.expect(responseData.data[0].scores[0].blockchain_transaction).to.be.an('object');\r",
+									"       let txid= responseData.data[0].scores[0].blockchain_transaction.txid; \r",
+									"    pm.expect(typeof txid === 'string' || file === null).to.be.true;\r",
+									"let explorer= responseData.data[0].scores[0].blockchain_transaction.explorer; \r",
+									"    pm.expect(typeof explorer === 'string' || explorer === null).to.be.true;\r",
+									"    let report_uuid= responseData.data[0].scores[0].report_uuid; \r",
+									"    pm.expect(typeof report_uuid === 'string' || report_uuid === null).to.be.true;\r",
+									"  });\r",
+									"\r",
+									"     pm.test(\"Response have all keys in data\", function () {\r",
+									"pm.expect(responseData.data[0]).to.have.all.keys('scoring_uuid', 'address', 'datetime', 'score','status', 'scores');\r",
+									"});\r",
+									"     pm.test(\"Response have all keys in address\", function () {\r",
+									"pm.expect(responseData.data[0].address).to.have.all.keys('id', 'uuid', 'customer_uuid', 'country','city', 'street', 'house','apartment','postcode','description','created_at','updated_at','deleted_at','entrance','longitude', 'latitude');\r",
+									"});\r",
+									"pm.test(\"Response have all keys in scores\", function () {\r",
+									"pm.expect(responseData.data[0].scores[0]).to.have.all.keys('uuid', 'type', 'datetime','action', 'score', 'file','blockchain_transaction','report_uuid');\r",
+									"});\r",
+									"\r",
+									"    "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "7d229b67-54d2-4d86-8e90-015cba6310cf",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/app/scoring",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"scoring"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/scoring/{scoring_uuid}",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3efc0c7d-886b-4519-b517-8e7ef55bd243",
+								"exec": [
+									"let responseData = pm.response.json()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									" pm.test(\"Format data Response body contains\", () => {\r",
+									"    pm.expect(responseData.data).to.be.an('object');\r",
+									"    pm.expect(responseData.data.id).to.be.a('number');\r",
+									"    pm.expect(responseData.data.uuid).to.be.a('string');\r",
+									"    pm.expect(responseData.data.customer_uuid).to.be.a('string');  \r",
+									"    pm.expect(responseData.data.address).to.be.an('object');\r",
+									"    let last_score= responseData.data.last_score; \r",
+									"    pm.expect(typeof last_score === 'number' || last_score === null).to.be.true;\r",
+									"    pm.expect(responseData.data.last_datetime).to.be.a('string');\r",
+									"    pm.expect(responseData.data.last_action).to.be.a('string');\r",
+									"    pm.expect(responseData.data.created_at).to.be.a('string');\r",
+									"    pm.expect(responseData.data.updated_at).to.be.a('string');\r",
+									"    pm.expect(responseData.data.scores).to.be.an('array');\r",
+									"    pm.expect(responseData.data.address.country).to.be.a('string');\r",
+									"    pm.expect(responseData.data.address.city).to.be.a('string');\r",
+									"    pm.expect(responseData.data.address.street).to.be.a('string');\r",
+									"    pm.expect(responseData.data.address.house).to.be.a('string');\r",
+									"    pm.expect(responseData.data.address.apartment).to.be.a('string');\r",
+									"    pm.expect(responseData.data.address.postcode).to.be.a('string');\r",
+									"    pm.expect(responseData.data.address.description).to.be.a('string');\r",
+									"    pm.expect(responseData.data.address.created_at).to.be.a('string');\r",
+									"    pm.expect(responseData.data.address.updated_at).to.be.a('string');\r",
+									"        let deleted_at = responseData.data.address.deleted_at;\r",
+									"    pm.expect(typeof deleted_at === 'string' || deleted_at=== null).to.be.true;\r",
+									"    pm.expect(responseData.data.address.entrance).to.be.a('string');\r",
+									"    pm.expect(responseData.data.address.longitude).to.be.a('number');\r",
+									"    pm.expect(responseData.data.address.latitude).to.be.a('number');\r",
+									"\r",
+									"    pm.expect(responseData.data.scores).to.be.an('array');\r",
+									"    pm.expect(responseData.data.scores[0].uuid).to.be.a('string');\r",
+									"    pm.expect(responseData.data.scores[0].type).to.be.a('string');\r",
+									"    pm.expect(responseData.data.scores[0].datetime).to.be.a('string');\r",
+									"    pm.expect(responseData.data.scores[0].action).to.be.a('string');\r",
+									"  let score2= responseData.data.scores[0].score; \r",
+									"    pm.expect(typeof score2 === 'number' || score2 === null).to.be.true;\r",
+									"     let file= responseData.data.scores[0].file; \r",
+									"    pm.expect(typeof file === 'string' || file === null).to.be.true;\r",
+									"      pm.expect(responseData.data.scores[0].blockchain_transaction).to.be.an('object');\r",
+									"       let txid= responseData.data.scores[0].blockchain_transaction.txid; \r",
+									"    pm.expect(typeof txid === 'string' || file === null).to.be.true;\r",
+									"let explorer= responseData.data.scores[0].blockchain_transaction.explorer; \r",
+									"    pm.expect(typeof explorer === 'string' || explorer === null).to.be.true;\r",
+									"    let report_uuid= responseData.data.scores[0].report_uuid; \r",
+									"    pm.expect(typeof report_uuid === 'string' || report_uuid === null).to.be.true;\r",
+									"  });\r",
+									"\r",
+									"     pm.test(\"Response have all keys in data\", function () {\r",
+									"pm.expect(responseData.data).to.have.all.keys('id', 'uuid', 'customer_uuid', 'address', 'last_datetime', 'last_action', 'last_score', 'created_at','updated_at', 'scores');\r",
+									"});\r",
+									"     pm.test(\"Response have all keys in address\", function () {\r",
+									"pm.expect(responseData.data.address).to.have.all.keys('id', 'uuid', 'customer_uuid', 'country','city', 'street', 'house','apartment','postcode','description','created_at','updated_at','deleted_at','entrance','longitude', 'latitude');\r",
+									"});\r",
+									"pm.test(\"Response have all keys in scores\", function () {\r",
+									"pm.expect(responseData.data.scores[0]).to.have.all.keys('uuid', 'type', 'datetime','action', 'score', 'file','blockchain_transaction','report_uuid');\r",
+									"});\r",
+									"pm.test(\"Response have all keys in blockchain_transaction\", function () {\r",
+									"pm.expect(responseData.data.scores[0].blockchain_transaction).to.have.all.keys('txid', 'explorer');\r",
+									"});\r",
+									"    "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "58a14717-7a04-4f4f-8a9a-d35b5a76f470",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/app/scoring/{{scoring_uuid}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"scoring",
+								"{{scoring_uuid}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/scoring/{scoring_uuid}/for-app",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "343e1fb6-4e04-42e5-ae26-17ced38930c4",
+								"exec": [
+									"let responseData = pm.response.json()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									" pm.test(\"Format data Response body contains\", () => {\r",
+									"    pm.expect(responseData.data).to.be.an('object');\r",
+									"    pm.expect(responseData.data.scoring_uuid).to.be.a('string');\r",
+									"    pm.expect(responseData.data.address).to.be.an('object');\r",
+									"    pm.expect(responseData.data.datetime).to.be.a('string');  \r",
+									"    let score= responseData.data.score; \r",
+									"    pm.expect(typeof score === 'number' || score === null).to.be.true;\r",
+									"    pm.expect(responseData.data.status).to.be.a('string');\r",
+									"    pm.expect(responseData.data.scores).to.be.an('array');\r",
+									"//     pm.expect(responseData.data.created_at).to.be.a('string');\r",
+									"//     pm.expect(responseData.data.updated_at).to.be.a('string');\r",
+									"//     pm.expect(responseData.data.scores).to.be.an('array');\r",
+									"//     pm.expect(responseData.data.address.country).to.be.a('string');\r",
+									"//     pm.expect(responseData.data.address.city).to.be.a('string');\r",
+									"//     pm.expect(responseData.data.address.street).to.be.a('string');\r",
+									"//     pm.expect(responseData.data.address.house).to.be.a('string');\r",
+									"//     pm.expect(responseData.data.address.apartment).to.be.a('string');\r",
+									"//     pm.expect(responseData.data.address.postcode).to.be.a('string');\r",
+									"//     pm.expect(responseData.data.address.description).to.be.a('string');\r",
+									"//     pm.expect(responseData.data.address.created_at).to.be.a('string');\r",
+									"//     pm.expect(responseData.data.address.updated_at).to.be.a('string');\r",
+									"//         let deleted_at = responseData.data.address.deleted_at;\r",
+									"//     pm.expect(typeof deleted_at === 'string' || deleted_at=== null).to.be.true;\r",
+									"    pm.expect(responseData.data.address.entrance).to.be.a('string');\r",
+									"    pm.expect(responseData.data.address.longitude).to.be.a('number');\r",
+									"    pm.expect(responseData.data.address.latitude).to.be.a('number');\r",
+									"\r",
+									"    pm.expect(responseData.data.scores).to.be.an('array');\r",
+									"    pm.expect(responseData.data.scores[0].uuid).to.be.a('string');\r",
+									"    pm.expect(responseData.data.scores[0].type).to.be.a('string');\r",
+									"    pm.expect(responseData.data.scores[0].datetime).to.be.a('string');\r",
+									"    pm.expect(responseData.data.scores[0].action).to.be.a('string');\r",
+									"  let score2= responseData.data.scores[0].score; \r",
+									"    pm.expect(typeof score2 === 'number' || score2 === null).to.be.true;\r",
+									"     let file= responseData.data.scores[0].file; \r",
+									"    pm.expect(typeof file === 'string' || file === null).to.be.true;\r",
+									"      pm.expect(responseData.data.scores[0].blockchain_transaction).to.be.an('object');\r",
+									"       let txid= responseData.data.scores[0].blockchain_transaction.txid; \r",
+									"    pm.expect(typeof txid === 'string' || file === null).to.be.true;\r",
+									"let explorer= responseData.data.scores[0].blockchain_transaction.explorer; \r",
+									"    pm.expect(typeof explorer === 'string' || explorer === null).to.be.true;\r",
+									"    let report_uuid= responseData.data.scores[0].report_uuid; \r",
+									"    pm.expect(typeof report_uuid === 'string' || report_uuid === null).to.be.true;\r",
+									"  });\r",
+									"\r",
+									"     pm.test(\"Response have all keys in data\", function () {\r",
+									"pm.expect(responseData.data).to.have.all.keys('scoring_uuid', 'address', 'datetime', 'score', 'status', 'scores');\r",
+									"});\r",
+									"     pm.test(\"Response have all keys in address\", function () {\r",
+									"pm.expect(responseData.data.address).to.have.all.keys('id', 'uuid', 'customer_uuid', 'country','city', 'street', 'house','apartment','postcode','description','created_at','updated_at','deleted_at','entrance','longitude', 'latitude');\r",
+									"});\r",
+									"pm.test(\"Response have all keys in scores\", function () {\r",
+									"pm.expect(responseData.data.scores[0]).to.have.all.keys('uuid', 'type', 'datetime','action', 'score', 'file','blockchain_transaction','report_uuid');\r",
+									"});\r",
+									"pm.test(\"Response have all keys in blockchain_transaction\", function () {\r",
+									"pm.expect(responseData.data.scores[0].blockchain_transaction).to.have.all.keys('txid', 'explorer');\r",
+									"});\r",
+									"    "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "a03b4d65-7eb6-453c-90be-5c12df2e03a2",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/app/scoring/{{scoring_uuid}}/for-app",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"scoring",
+								"{{scoring_uuid}}",
+								"for-app"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "app/services",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d70ed802-a451-43bd-9d3a-5d5d93281169",
+								"exec": [
+									"let responseData = pm.response.json()\r",
+									"console.log (responseData);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									" pm.test(\"Format data Response body contains\", () => {\r",
+									"    pm.expect(responseData.data).to.be.an('array');\r",
+									"    pm.expect(responseData.data[0].uuid).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].title).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].type).to.be.a('string');  \r",
+									"    pm.expect(responseData.data[0].icon_path).to.be.a('string');  \r",
+									"    pm.expect(responseData.data[0].products).to.be.an('array');\r",
+									"    pm.expect(responseData.data[0].products[0].uuid).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].products[0].title).to.be.a('string');\r",
+									"    pm.expect(responseData.data[0].products[0].type).to.be.a('string');\r",
+									" });\r",
+									"     pm.test(\"Response have all keys in data\", function () {\r",
+									"pm.expect(responseData.data[0]).to.have.all.keys('uuid', 'title', 'type', 'icon_path','products');\r",
+									"});\r",
+									"     pm.test(\"Response have all keys in products\", function () {\r",
+									"pm.expect(responseData.data[0].products[0]).to.have.all.keys('uuid', 'title', 'type');\r",
+									"});\r",
+									"\r",
+									"\r",
+									"    "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "0ddb935e-cff6-4469-99fb-bb7076a31f17",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_client_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/app/services",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"app",
+								"services"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"id": "47a43d03-1361-4ea4-95a4-b6895b136aa6"
+		}
+	]
+}
